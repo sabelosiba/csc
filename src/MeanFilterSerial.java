@@ -16,14 +16,20 @@ public class MeanFilterSerial{
     int sumRed = 0;
     int sumGreen =0;
     int sumBlue =0;
+    int max =0;
+    int[] pixelArr = null;
+    int h=0;
+    int w=0;
+    int odd=0;
+    int index=0;
     
        
-    public static void main(String args[]) throws FileNotFoundException{
+    public static void main(String args[]) throws FileNotFoundException, IOException{
         MeanFilterSerial mean;
         int wii = Integer.parseInt(args[2]);
         try{
             if(wii >= 3 ){
-                mean = new MeanFilterSerial(args[0], args[1], wii);
+                mean = new MeanFilterSerial(args[0], args[1], args[2]);
                 mean.imageMean();
             }
             else{
@@ -34,11 +40,16 @@ public class MeanFilterSerial{
         }
     }
     
-    public MeanFilterSerial(String inImage, String outImage, int window) throws IOException{
+    public MeanFilterSerial(String inImage, String outImage, String wind) throws IOException{
         inImage = this.inImage;
         outImage = this.outImage;
-        window = this.window;
+        window = Integer.parseInt(wind);
         read();
+        max = window*window;
+        odd = (window -1)/2;
+        pixelArr = new int[max];
+        h = image.getHeight();
+        w= image.getWidth();
     }
     
     public void read() throws IOException{
@@ -53,15 +64,9 @@ public class MeanFilterSerial{
     
     public void imageMean() throws IOException{
         System.out.println("WhAT");
-        int max = window*window;
-        int odd = (window - (int)(window/2)) -1;
-        int h = image.getHeight();
-        int w = image.getWidth();
-        //int[] pixelArr = new int[max];
         for(int i=odd; i< h-odd; i++){
             for(int j=odd; j< w-odd; j++){
-                int index =0;
-                int[] pixelArr = new int[max];
+                index =0;
                 for(int i1= i-odd; i1<= i+odd; i1++){
                     for(int j1= j-odd; j1<= j+odd; j1++){
                         pixelArr[index++] = image.getRGB(j1,i1);
@@ -85,9 +90,9 @@ public class MeanFilterSerial{
     
     public void printImage() throws IOException{
         try{
-            f = new File("/home/sabelo/csc2/data/inde.jpeg");
+            f = new File("/home/sabelo/csc2/data/mean.jpeg");
             //image = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            ImageIO.write(image, "jpg", f);
+            ImageIO.write(image, "jpeg", f);
             System.out.println("write image complete");
         }catch(IOException e){
             System.out.println("Error writing image: :" + e);
