@@ -17,7 +17,6 @@ public class MeanFilterSerial{
     int sumGreen =0;
     int sumBlue =0;
     int max =0;
-    int[] pixelArr = null;
     int h=0;
     int w=0;
     int odd=0;
@@ -47,7 +46,6 @@ public class MeanFilterSerial{
         read();
         max = window*window;
         odd = (window -1)/2;
-        pixelArr = new int[max];
         h = image.getHeight();
         w= image.getWidth();
     }
@@ -63,19 +61,15 @@ public class MeanFilterSerial{
     }
     
     public void imageMean() throws IOException{
-        System.out.println("WhAT");
         for(int i=odd; i< h-odd; i++){
             for(int j=odd; j< w-odd; j++){
-                index =0;
                 for(int i1= i-odd; i1<= i+odd; i1++){
                     for(int j1= j-odd; j1<= j+odd; j1++){
-                        pixelArr[index++] = image.getRGB(j1,i1);
+                        int pixel = image.getRGB(j1,i1);
+                        sumRed += (pixel >> 16) & 0xff:
+                        sumGreen += (pixel >> 8) & 0xff;
+                        sumBlue += (pixel) & 0xff;
                     }
-                }
-                for(int x=0; x<max; x++){
-                    sumRed += (pixelArr[x] >> 16) & 0xff;
-                    sumGreen += (pixelArr[x] >> 8) & 0xff;
-                    sumBlue += (pixelArr[x]) & 0xff; 
                 }
                 sumRed =sumRed/ max;
                 sumGreen = sumGreen/max;
