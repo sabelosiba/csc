@@ -15,7 +15,9 @@ public class MedianFilterSerial{
     
     int max=0;
     int odd=0;
-    int[] pixelArr = null;
+    int[] redList = null;
+    int[] greenList = null;
+    int[] blueList = null;
     int H = 0;
     int W = 0;
     int index = 0;
@@ -28,7 +30,9 @@ public class MedianFilterSerial{
         read();
         max = window*window;
         odd = (window - 1) / 2;
-        pixelArr = new int[max];
+        redList = new int[max];
+        greenList = new int[max];
+        blueList = new int[max];
         H = image.getHeight();
         W = image.getWidth();
         System.out.println(window +"\n"+ max +"\n" + H +"\n" + W +"\n" + odd);
@@ -45,21 +49,35 @@ public class MedianFilterSerial{
     }
     
     public void imageMedian(){
-        System.out.println("ngakifika");
-        
+        int mid = max/2;
+        int redMed =0;
+        int greenMed =0;
+        int blueMed =0;
         for(int i=odd; i<H-odd; i++){
             for(int j=odd; j<W-odd; j++){
                 index =0;
                 for(int i1=i-odd; i1<=i+odd; i1++){
                     for(int j1=j-odd; j1<=j+odd; j1++){
-                        pixelArr[index++] = image.getRGB(j1,i1);
+                        int pixel = image.getRGB(j1,i1);
+                        redList[index] = (pixel >> 16) & 0xff;
+                        greenList[index] = (pixel >> 8) & 0xff;
+                        blueList[index] = (pixel) & 0xff;
+                        index++; 
                     }
                 }
-                Arrays.sort(pixelArr);
+                Arrays.sort(redList);
+                Arrays.sort(greenList);
+                Arrays.sort(blueList);
                 if(max%2 == 0){
-                    sum = (pixelArr[max/2] + pixelArr[(max/2)-1]) / 2;
+                    redMed = (redList[mid] + redList[mid-1]) / 2;
+                    greenMed = (greenList[mid] + greenList[mid-1]) / 2 ;
+                    blueMed = (blueList[mid] + blueList[mid-1]) / 2;
+                    sum = (redMed << 16) | (greenMed << 8) | blueMed;
                 }else{
-                    sum = pixelArr[max/2];
+                    redMed = redList[mid];
+                    greenMed = greenList[mid];
+                    blueMed = blueList[mid];
+                    sum = (redMed << 16) | (greenMed << 8) | blueMed;
                 }
                 image.setRGB(j,i, (int) sum );
             }
