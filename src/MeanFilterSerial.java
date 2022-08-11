@@ -13,9 +13,6 @@ public class MeanFilterSerial{
     BufferedImage image =null;
     File f = null;
     
-    int sumRed = 0;
-    int sumGreen =0;
-    int sumBlue =0;
     int max =0;
     int h=0;
     int w=0;
@@ -33,6 +30,7 @@ public class MeanFilterSerial{
             }
             else{
                 System.out.println("Enter window width that is an odd number and atleast 3");
+                System.exit(0);
             }
         }catch(Exception e){
             System.out.println("Error somewhere");
@@ -63,6 +61,9 @@ public class MeanFilterSerial{
     public void imageMean() throws IOException{
         for(int i=odd; i< h-odd; i++){
             for(int j=odd; j< w-odd; j++){
+                int sumRed =0;
+                int sumGreen=0;
+                int sumBlue=0;
                 for(int i1= i-odd; i1<= i+odd; i1++){
                     for(int j1= j-odd; j1<= j+odd; j1++){
                         int pixel = image.getRGB(j1,i1);
