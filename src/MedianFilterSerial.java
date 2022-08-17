@@ -13,6 +13,7 @@ public class MedianFilterSerial{
     BufferedImage image = null;   
     BufferedImage image1 = null;
     File f = null;
+    File f1 =null;
     
     int max=0;   // RGB array length
     int odd=0;    // index of pixel to set
@@ -36,24 +37,24 @@ public class MedianFilterSerial{
         blueList = new int[max];
         H = image1.getHeight();
         W = image1.getWidth();
+        System.out.println( H+"\n"+W + "\n" + max);
     }
     
     public void read() throws IOException{
         try{
-            f = new File("/home/sabelo/csc2/data/"+inImage+"\"");
+            f = new File("C:\\\\Users\\\\wwwsa\\\\OneDrive - University of Cape Town\\\\Desktop\\\\csc2\\\\data"+ "\\\\"+inImage);
             image = ImageIO.read(f);
             image1 = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+            image1 = ImageIO.read(f);
             System.out.println("Image read successful");
         }catch(Exception e){
             System.out.println("Error reading Image: "+e);
+            System.exit(0);
         }
     }
     
     public void imageMedian(){
         int mid = max/2;  // index of median value
-        int redMed =0;   //red color median value
-        int greenMed =0;   //green color median value
-        int blueMed =0;    //blue color median value
         final long start = System.currentTimeMillis() ; 
         for(int i=odd; i<H-odd; i++){
             for(int j=odd; j<W-odd; j++){
@@ -71,47 +72,47 @@ public class MedianFilterSerial{
                 Arrays.sort(greenList);
                 Arrays.sort(blueList);
                 if(max%2 == 0){
-                    redMed = (redList[mid] + redList[mid-1]) / 2;
-                    greenMed = (greenList[mid] + greenList[mid-1]) / 2 ;
-                    blueMed = (blueList[mid] + blueList[mid-1]) / 2;
+                    int redMed = (redList[mid] + redList[mid-1]) / 2;          //red color median value
+                    int greenMed = (greenList[mid] + greenList[mid-1]) / 2 ;       //green color median value
+                    int blueMed = (blueList[mid] + blueList[mid-1]) / 2;       //blue color median value
                     sum = (redMed << 16) | (greenMed << 8) | blueMed;
                 }else{
-                    redMed = redList[mid];
-                    greenMed = greenList[mid];
-                    blueMed = blueList[mid];
+                    int redMed = redList[mid];        
+                    int greenMed = greenList[mid];
+                    int blueMed = blueList[mid];
                     sum = (redMed << 16) | (greenMed << 8) | blueMed;
                 }
                 image1.setRGB(j,i, (int) sum );
             }
         }
-        System.out.println("DONE filtering...");
         final long elapsed = System.currentTimeMillis() - start; 
-      	System.out.println("Time elapsed = "+elapsed+" Milliseconds for "+inImage + " of width*Height: "+W+"*"+H +" window filter size:"+ window+"*"+window);
+        System.out.println("Time elapsed = "+elapsed+" Milliseconds for "+inImage + " of width*Height: "+W+"*"+H +" window filter size:"+ window+"*"+window);
         writeImage();
     }
     
     public void writeImage(){
         try{
-            f = new File("/home/sabelo/csc2/data/"+outImage+ "\"");
-            ImageIO.write(image1, "jpeg", f );
+            f1 = new File("C:\\\\Users\\\\wwwsa\\\\OneDrive - University of Cape Town\\\\Desktop\\\\csc2\\\\data"+ "\\\\"+outImage);
+            ImageIO.write(image1, "jpeg", f1);
             System.out.println("image write complete");
         }catch(Exception e){
             System.out.println("Error writing to image :" + e);
+            System.exit(0);
         }
     }
     public static void main(String args[]) throws FileNotFoundException, IOException{
         int space = Integer.parseInt(args[2]);
         try{
-            if((space >= 3) && (args.length > 0)){
+            if((space >= 3) && space % 2 != 0 ){
                 MedianFilterSerial median = new MedianFilterSerial(args[0], args[1], args[2]);
-                System.out.println(space);
                 median.imageMedian();
             }else{
-                System.out.println("Enter correct file names and/or odd number width atleast 3");
+                System.out.println("Enter correct file names with extension and/or window width that is an odd number and atleast 3");
                 System.exit(0);
             }
         }catch(Exception e){
             System.out.println("Error Execution : " + e);
+            System.exit(0);
         }
     }
 }

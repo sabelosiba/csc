@@ -25,7 +25,7 @@ public class MeanFilterParallel extends RecursiveAction{
    int[] myArr = null;
    int H = 0;
    int W = 0;
-   final int SEQUANTIAL_CUTOFF = 1554350;
+   final int SEQUANTIAL_CUTOFF = 321632;
    int start =0;
    int end =0;
    int odi = 0;
@@ -49,8 +49,7 @@ public class MeanFilterParallel extends RecursiveAction{
       odd1 = (window - 1) /2 ;
       max = window * window;  
       start = H - odd1; 
-      end = W - odd1;
-      System.out.println(H);  
+      end = W - odd1;  
    }
   
   
@@ -115,9 +114,9 @@ public class MeanFilterParallel extends RecursiveAction{
       BufferedImage image = null;
       int Wid= 0;
       int Hei = 0;
-      int window = 27;
-      int oddd = (window-1)/2;
       int wii = Integer.parseInt(args[2]);
+      int oddd = (wii-1)/2;
+      
       //
       String inImage = "";   
       String outImage = "";
@@ -125,7 +124,7 @@ public class MeanFilterParallel extends RecursiveAction{
       	if(wii%2 != 0 && wii >= 3){
       		inImage = args[0];
       		outImage = args[1];
-        	File f = new File("/home/sabelo/csc2/data/"+inImage+"\"");
+        	   File f = new File("C:\\\\Users\\\\wwwsa\\\\OneDrive - University of Cape Town\\\\Desktop\\\\csc2\\\\data"+ "\\\\"+inImage);
          	BufferedImage info = ImageIO.read(f);
          	Wid = info.getWidth();
          	Hei= info.getHeight();
@@ -133,24 +132,27 @@ public class MeanFilterParallel extends RecursiveAction{
          	image = ImageIO.read(f);
          	System.out.println("Reading file successful"); 
          }else{
-      		System.out.println("Enter correct file names and/or odd number width atleast 3");
-                System.exit(0);
+      		System.out.println("Enter correct file names with extension and/or window width that is an odd number and atleast 3");
+            System.exit(0);
       	 }      
       }catch(IOException e){
          System.out.println("Error reading file : " + e);
+         System.exit(0);
       }
-      MeanFilterParallel paraFilter = new MeanFilterParallel(oddd, Wid, oddd,  Hei , window, image); 
+      
+      MeanFilterParallel paraFilter = new MeanFilterParallel(oddd, Wid, oddd,  Hei , wii, image); 
       final long start = System.currentTimeMillis() ; 
       ForkJoinPool pool = new ForkJoinPool();
       pool.invoke(paraFilter);
       final long elapsed = System.currentTimeMillis() - start; 
       System.out.println("Time elapsed = "+elapsed+" Milliseconds for "+inImage + " of width*Height: "+Wid+"*"+Hei +" window filter size:"+ wii+"*"+wii);
       try{
-         File f1 = new File("/home/sabelo/csc2/data/"+outImage+"\"");
+         File f1 = new File("C:\\\\Users\\\\wwwsa\\\\OneDrive - University of Cape Town\\\\Desktop\\\\csc2\\\\data"+ "\\\\" +outImage);
          ImageIO.write(image, "jpg", f1);
          System.out.println("write image complete");
       }catch(IOException e){
          System.out.println("Error writing image :" + e);
+         System.exit(0);
       }
    }
 }

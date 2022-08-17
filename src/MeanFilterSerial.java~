@@ -15,6 +15,7 @@ public class MeanFilterSerial{
     private String inImage;
     private String outImage;
     private int window;
+    String loc = "/home/sabelo/csc2/data/";
     BufferedImage image =null;
     BufferedImage image1 = null;
     File f = null;
@@ -34,14 +35,10 @@ public class MeanFilterSerial{
         try{
             if(wii%2 != 0 && wii >= 3 ){
                 mean = new MeanFilterSerial(args[0], args[1], args[2]);
-                final long start = System.currentTimeMillis() ; 
                 mean.imageMean();
-                final long elapsed = System.currentTimeMillis() - start; 
-                System.out.println("Time elapsed = "+elapsed+" Milliseconds for "+mean.inImage + " of width*Height: "+mean.w+"*"+mean.h +" window filter size:"+ mean.window+"*"+mean.window);
-                mean.printImage();
             }
             else{
-                System.out.println("Enter correct file names with extension and/or window width that is an odd number and atleast 3");
+                System.out.println("Enter window width that is an odd number and atleast 3");
                 System.exit(0);
             }
         }catch(Exception e){
@@ -58,9 +55,11 @@ public class MeanFilterSerial{
      */
      
     public MeanFilterSerial(String inIma, String outIma, String wind) throws IOException{
-        inImage = inIma;
-        outImage = outIma ;
+        inImage = inIma + ".jpeg";
+        outImage = outIma + ".jpeg";
         window = Integer.parseInt(wind);
+        loc = loc + inImage ;
+        System.out.println(loc);
         read();
         max = window*window;
         odd = (window -1)/2;
@@ -72,10 +71,11 @@ public class MeanFilterSerial{
      */
     public void read() throws IOException{
         try{
-            f = new File("C:\\\\Users\\\\wwwsa\\\\OneDrive - University of Cape Town\\\\Desktop\\\\csc2\\\\data"+ "\\\\" +inImage);
+            f = new File("/home/sabelo/csc2/data/"+"\""+inImage+"\"");
+            
             image = ImageIO.read(f);
-            image1 = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-            image1 = ImageIO.read(f);
+            //image1 = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+            //image1 = ImageIO.read(f);
             System.out.println("Read image successful");
         }catch(IOException e){
             System.out.println("Error reading image: " + e);
@@ -86,6 +86,7 @@ public class MeanFilterSerial{
      * to calculate mean and set each pixel accordingly
      */
     public void imageMean() throws IOException{
+        final long start = System.currentTimeMillis() ; 
         for(int i=odd; i< h-odd; i++){
             for(int j=odd; j< w-odd; j++){
                 int sumRed =0;
@@ -105,18 +106,21 @@ public class MeanFilterSerial{
                 int mean = (sumRed<<16) | (sumGreen<<8) | sumBlue;
                 image1.setRGB(j,i, (int)(mean));
             }
-        }  
+        }    
+        System.out.println("DONE");
+        final long elapsed = System.currentTimeMillis() - start; 
+      	System.out.println("Time elapsed = "+elapsed+" Milliseconds for "+inImage + " of width*Height: "+w+"*"+h +" window filter size:"+ window+"*"+window);
+        printImage();
     }
     /* void helper method to write the filtered image to output image
      */
     public void printImage() throws IOException{
         try{
-            f1 = new File("C:\\\\Users\\\\wwwsa\\\\OneDrive - University of Cape Town\\\\Desktop\\\\csc2\\\\data"+ "\\\\" +outImage);
+            f1 = new File("/home/sabelo/csc2/data/"+outImage+"\"");
             ImageIO.write(image1, "jpeg", f1);
             System.out.println("write image complete");
         }catch(IOException e){
             System.out.println("Error writing image: :" + e);
-            System.exit(0);
         }
     } 
 }

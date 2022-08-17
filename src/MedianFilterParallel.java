@@ -23,7 +23,7 @@ public class MedianFilterParallel extends RecursiveAction{
     private BufferedImage image1;
     private int odd;
     private int max;
-    protected static int SEQUANTIAL_CUTOFF =194400;
+    protected static int SEQUANTIAL_CUTOFF =321632;
     
     int[] redList = null; 
     int[] greenList = null;
@@ -128,9 +128,8 @@ public class MedianFilterParallel extends RecursiveAction{
       BufferedImage image = null;
       int Wid = 0;
       int Hei= 0;
-      int window = 27;
-      int oddd = (window-1)/2;
       int wii = Integer.parseInt(args[2]);
+      int oddd = (wii-1)/2;
       String inImage = "";
       String outImage = "";
       
@@ -138,7 +137,7 @@ public class MedianFilterParallel extends RecursiveAction{
          if(wii%2 != 0 && wii >= 3){
       		inImage = args[0];
       		outImage = args[1];
-        	File f = new File("/home/sabelo/csc2/data/"+inImage+"\"");
+        	File f = new File("C:\\\\Users\\\\wwwsa\\\\OneDrive - University of Cape Town\\\\Desktop\\\\csc2\\\\data"+ "\\\\"+inImage);
          	BufferedImage info = ImageIO.read(f);
          	Wid = info.getWidth();
          	Hei= info.getHeight();
@@ -146,15 +145,16 @@ public class MedianFilterParallel extends RecursiveAction{
          	image = ImageIO.read(f);
          	System.out.println("Reading file successful"); 
          }else{
-      		System.out.println("Enter correct file names and/or odd number width atleast 3");
+      		System.out.println("Enter correct file names with extension and/or window width that is an odd number and atleast 3");
                 System.exit(0);
           }       
       }catch(IOException e){
          System.out.println("Error reading file : " + e);
+         System.exit(0);
       }
       
       
-      MedianFilterParallel Med = new MedianFilterParallel(oddd, Wid, oddd,  Hei, window, image);   
+      MedianFilterParallel Med = new MedianFilterParallel(oddd, Wid, oddd,  Hei, wii, image);   
       ForkJoinPool pool = new ForkJoinPool();
       final long start = System.currentTimeMillis() ; 
       pool.invoke(Med);
@@ -164,11 +164,12 @@ public class MedianFilterParallel extends RecursiveAction{
       
       
       try{
-         File f1 = new File("/home/sabelo/csc2/data/"+outImage+"\"");
+         File f1 = new File("C:\\\\Users\\\\wwwsa\\\\OneDrive - University of Cape Town\\\\Desktop\\\\csc2\\\\data"+ "\\\\"+outImage);
          ImageIO.write(image, "jpg", f1);
          System.out.println("write image complete");
       }catch(IOException e){
          System.out.println("Error writing image :" + e);
+         System.exit(0);
       }
       
    }
