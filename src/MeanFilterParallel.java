@@ -111,10 +111,10 @@ public class MeanFilterParallel extends RecursiveAction{
    /** Main method for the application of the Parallel filter
      * @param args store string array, if not specified it is empty
      */  
-   public static void main(String argsp[]) throws FileNotFoundException , IOException{
+   public static void main(String args[]) throws FileNotFoundException , IOException{
       BufferedImage image = null;
-      int Width = 0;
-      int Height = 0;
+      int Wid= 0;
+      int Hei = 0;
       int window = 27;
       int oddd = (window-1)/2;
       int wii = Integer.parseInt(args[2]);
@@ -135,11 +135,11 @@ public class MeanFilterParallel extends RecursiveAction{
          }else{
       		System.out.println("Enter correct file names and/or odd number width atleast 3");
                 System.exit(0);
-      	}      
+      	 }      
       }catch(IOException e){
          System.out.println("Error reading file : " + e);
       }
-      MeanFilterParallel paraFilter = new MeanFilterParallel(oddd, Width , oddd,  Height , window, image); 
+      MeanFilterParallel paraFilter = new MeanFilterParallel(oddd, Wid, oddd,  Hei , window, image); 
       final long start = System.currentTimeMillis() ; 
       ForkJoinPool pool = new ForkJoinPool();
       pool.invoke(paraFilter);

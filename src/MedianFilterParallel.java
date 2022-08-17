@@ -34,7 +34,6 @@ public class MedianFilterParallel extends RecursiveAction{
     int odi =0;
     int start =0;
     int end =0;
-    int[][] c =null;
     
     /* constructor method which passed arguments if instance of the class created and 
      * calls method to read an image to set image parameters
@@ -125,15 +124,15 @@ public class MedianFilterParallel extends RecursiveAction{
     /** Main method for the application of the Median Parallel filter
      * @param args store string array, if not specified it is empty
      */ 
-    public static void main(String argsp[]) throws FileNotFoundException , IOException{
+    public static void main(String args[]) throws FileNotFoundException , IOException{
       BufferedImage image = null;
       int Wid = 0;
       int Hei= 0;
       int window = 27;
       int oddd = (window-1)/2;
-      int wii = Integer.parseInt(args[2];
+      int wii = Integer.parseInt(args[2]);
       String inImage = "";
-      String inImage = "";
+      String outImage = "";
       
       try{
          if(wii%2 != 0 && wii >= 3){
@@ -148,13 +147,14 @@ public class MedianFilterParallel extends RecursiveAction{
          	System.out.println("Reading file successful"); 
          }else{
       		System.out.println("Enter correct file names and/or odd number width atleast 3");
-                System.exit(0);       
+                System.exit(0);
+          }       
       }catch(IOException e){
          System.out.println("Error reading file : " + e);
       }
       
       
-      MedianFilterParallel Med = new MedianFilterParallel(oddd, Width , oddd,  Height , window, image);   
+      MedianFilterParallel Med = new MedianFilterParallel(oddd, Wid, oddd,  Hei, window, image);   
       ForkJoinPool pool = new ForkJoinPool();
       final long start = System.currentTimeMillis() ; 
       pool.invoke(Med);

@@ -13,6 +13,7 @@ CLASS_FILES = $(CLASSES:%.class=$(BINDIR)/%.class)
 default : $(CLASS_FILES)
 clean : 
 	rm $(BINDIR)/*.class
+	rm $(SRCDIR)/*.class
 
 Autorun :
 	python3 src/pcp1Script.py
