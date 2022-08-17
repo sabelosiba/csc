@@ -14,8 +14,8 @@ default : $(CLASS_FILES)
 clean : 
 	rm $(BINDIR)/*.class
 
-runMeanSerial : $(CLASS_FILES)
-	java -cp $(BINDIR) MeanFilterSerial
+Autorun :
+	python3 src/pcp1Script.py
 	
-runMedSerial : $(CLASS_FILES)
-	java -cp $(BINDIR) MedianFilterSerial 	
+docs :
+	javadoc -d doc/ src/*.java
